@@ -7,37 +7,28 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Build & Test') {
             steps {
-                checkout scm
+                sh 'mvn clean package'
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean compile'
+        stage('Archive Artifact') {
+            when {
+                expression { currentBuild.currentResult == 'SUCCESS' }
             }
-        }
-
-        stage('Test') {
             steps {
-                sh 'mvn test'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                sh 'mvn package'
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
     }
 
     post {
         success {
-            echo 'Build Successful ✅'
+            echo '✅ Build Successful - JAR Archived'
         }
         failure {
-            echo 'Build Failed ❌'
+            echo '❌ Build Failed'
         }
     }
 }
