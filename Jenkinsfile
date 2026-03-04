@@ -26,6 +26,14 @@ pipeline {
         }
     }
 
+         stage('Run Application') {
+            when {
+                expression { currentBuild.currentResult == 'SUCCESS' }
+            }
+            steps {
+                sh 'nohup java -jar target/*.jar > app.log 2>&1 &'
+            }
+        }
     options {
         timeout(time: 5, unit: 'MINUTES')
     }
