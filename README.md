@@ -16,7 +16,7 @@ The Jenkins pipeline performs the following steps:
 3. Run unit tests
 4. Package the application into a JAR file
 5. Archive the generated artifact in Jenkins
-
+6. EC2 instance must be c7i-flex.large where Jenkins installed, This project does not support t3.micro 
 ---
 
 ## 🏗 Project Structure
